@@ -24,6 +24,12 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * Clase de controladora para invocar a métodos CRUD con rest api.
  */
@@ -102,4 +108,15 @@ public class ProductController {
         );
     }
 
+    @GetMapping("/product")
+    public ResponseEntity<List<Integer>> producAcountBank() {
+
+        Stream<Integer> countingStream
+                =Stream.iterate(0, i -> i + 1).limit(10);
+
+      List<Integer> listNumber=  countingStream.filter(i -> i % 2 == 0)
+                .map(i -> i * i).collect(Collectors.toList());
+        return new ResponseEntity<>(listNumber,HttpStatus.OK);
+
+    }
 }
